@@ -53,12 +53,13 @@ namespace PARCIAL1D.Controllers
                         join e in _context.Empresa on deo.id_empresa equals e.id_empresa
                         join p in _context.Plato on deo.id_plato equals p.id_plato
                         join u in _context.Usuario on eo.id_usuario equals u.id_usuario
+                        where id == deo.id_detalle_orden
                         select new
                         {
                             deo.id_detalle_orden, nombre_empresa = e.nombre, e.representante, usuario_nombre = u.nombre, plato_nombre = p.nombre,
                             deo.cantidad, deo.comentarios, deo.descuento_especial, deo.recargo_orden,
                             deo.estado, deo.fecha_creacion, deo.fecha_mod
-                        }).FirstOrDefaultAsync();
+                        }).ToListAsync();
                             
                     return Ok(await data);
                 }
