@@ -31,7 +31,7 @@ namespace PARCIAL1D.Controllers
                         join p in _context.Pago on m.id_pago equals p.id_pago
                         select new
                         {
-                            m.descripcion, e.nombre, e.representante, p.tipo_pago, p.subtotal, p.total,
+                            m.id_mesa, m.descripcion, e.nombre, e.representante, p.tipo_pago, p.subtotal, p.total,
                             m.zona_mesa, m.cantidad_sillas, m.estado, m.fecha_creacion , m.fecha_mod
                         }).ToListAsync();
                             
@@ -50,7 +50,7 @@ namespace PARCIAL1D.Controllers
                         join p in _context.Pago on m.id_pago equals p.id_pago
                         select new
                         {
-                            m.descripcion, e.nombre, e.representante, p.tipo_pago, p.subtotal, p.total,
+                            m.id_mesa, m.descripcion, e.nombre, e.representante, p.tipo_pago, p.subtotal, p.total,
                             m.zona_mesa, m.cantidad_sillas, m.estado, m.fecha_creacion , m.fecha_mod
                         }).FirstOrDefaultAsync();
                             
