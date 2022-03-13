@@ -26,7 +26,21 @@ namespace PARCIAL1D.Controllers
                 [HttpGet]
                 public async Task<ActionResult<List<EncabezadoOrden>>> Get()
                 {
-                    return Ok(await _context.EncabezadoOrden.ToListAsync());
+                    var data = (from eo in _context.EncabezadoOrden
+                        join e in _context.Empresa on eo.id_empresa equals e.id_empresa
+                        join u in _context.Usuario on eo.id_usuario equals u.id_usuario
+                        join m in _context.Mesa on eo.id_mesa equals m.id_mesa
+                        select new
+                        {
+                            eo.id_encabezado_orden, nombre_empresa = e.nombre, e.representante, usuario_nombre = u.nombre,
+                            eo.tipo_orden,eo.fecha_orden, nombre_mesa = m.zona_mesa, m.cantidad_sillas, eo.cliente,
+                            eo.estado_orden, eo.tipo_pago, eo.estado, eo.fecha_creacion , eo.fecha_modificacion
+                        }).ToListAsync();
+                            
+                    if (data == null) 
+                        return BadRequest();
+                    
+                    return Ok(await data);
                 }
                 
                 //Get id

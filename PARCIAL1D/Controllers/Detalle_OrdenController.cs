@@ -33,11 +33,14 @@ namespace PARCIAL1D.Controllers
                         join u in _context.Usuario on eo.id_usuario equals u.id_usuario
                         select new
                         {
-                            deo.id_detalle_orden, en =e.nombre, e.representante, u.id_usuario, pn=p.nombre,
+                            deo.id_detalle_orden, nombre_empresa = e.nombre, e.representante, usuario_nombre = u.nombre, plato_nombre = p.nombre,
                             deo.cantidad, deo.comentarios, deo.descuento_especial, deo.recargo_orden,
                             deo.estado, deo.fecha_creacion, deo.fecha_mod
                         }).ToListAsync();
                             
+                    if (data == null) 
+                        return BadRequest();
+                    
                     return Ok(await data);
                 }
                 
@@ -45,10 +48,22 @@ namespace PARCIAL1D.Controllers
                 [HttpGet("{id}")]
                 public async Task<ActionResult<List<Detalle_Orden>>> Get(int id)
                 {
-                    var data= _context.Detalle_Orden.FindAsync(id);
+                    var data = (from deo in _context.Detalle_Orden
+                        join eo in _context.EncabezadoOrden on deo.id_encabezado_orden equals eo.id_encabezado_orden
+                        join e in _context.Empresa on deo.id_empresa equals e.id_empresa
+                        join p in _context.Plato on deo.id_plato equals p.id_plato
+                        join u in _context.Usuario on eo.id_usuario equals u.id_usuario
+                        select new
+                        {
+                            deo.id_detalle_orden, nombre_empresa = e.nombre, e.representante, usuario_nombre = u.nombre, plato_nombre = p.nombre,
+                            deo.cantidad, deo.comentarios, deo.descuento_especial, deo.recargo_orden,
+                            deo.estado, deo.fecha_creacion, deo.fecha_mod
+                        }).FirstOrDefaultAsync();
+                            
+                    
                     if (data == null) 
                         return BadRequest();
-                    return Ok(data);
+                    return Ok(await data);
                 }
                 
                 //Post

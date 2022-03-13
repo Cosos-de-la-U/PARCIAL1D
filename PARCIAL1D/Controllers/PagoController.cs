@@ -26,17 +26,42 @@ namespace PARCIAL1D.Controllers
                 [HttpGet]
                 public async Task<ActionResult<List<Pago>>> Get()
                 {
-                    return Ok(await _context.Pago.ToListAsync());
+                    var data = (from p in _context.Pago
+                        join eo in _context.EncabezadoOrden on p.id_encabezado_orden equals eo.id_encabezado_orden
+                        join e in _context.Empresa on p.id_empresa equals e.id_empresa
+                        join u in _context.Usuario on p.id_usuario equals u.id_usuario
+                        select new
+                        {
+                            p.id_pago, nombre_empresa = e.nombre, e.representante, usuario_nombre = u.nombre,
+                            p.tipo_pago,p.subtotal, p.propina, p.total, p.monto_pagado,
+                            p.fecha_creacion , p.fecha_mod, p.numero_tarjeta, p.nombre_tarjeta, p.autorizacion,p.estado
+                        }).ToListAsync();
+                            
+                    if (data == null) 
+                        return BadRequest();
+                    
+                    return Ok(await data);
                 }
                 
                 //Get id
                 [HttpGet("{id}")]
                 public async Task<ActionResult<List<Pago>>> Get(int id)
                 {
-                    var data= _context.Pago.FindAsync(id);
+                    var data = (from p in _context.Pago
+                        join eo in _context.EncabezadoOrden on p.id_encabezado_orden equals eo.id_encabezado_orden
+                        join e in _context.Empresa on p.id_empresa equals e.id_empresa
+                        join u in _context.Usuario on p.id_usuario equals u.id_usuario
+                        select new
+                        {
+                            p.id_pago, nombre_empresa = e.nombre, e.representante, usuario_nombre = u.nombre,
+                            p.tipo_pago,p.subtotal, p.propina, p.total, p.monto_pagado,
+                            p.fecha_creacion , p.fecha_mod, p.numero_tarjeta, p.nombre_tarjeta, p.autorizacion,p.estado
+                        }).FirstOrDefaultAsync();
+                            
                     if (data == null) 
                         return BadRequest();
-                    return Ok(data);
+                    
+                    return Ok(await data);
                 }
                 
                 //Post

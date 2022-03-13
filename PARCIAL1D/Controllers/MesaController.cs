@@ -26,17 +26,38 @@ namespace PARCIAL1D.Controllers
                 [HttpGet]
                 public async Task<ActionResult<List<Mesa>>> Get()
                 {
-                    return Ok(await _context.Mesa.ToListAsync());
+                    var data = (from m in _context.Mesa
+                        join e in _context.Empresa on m.empresa_id equals e.id_empresa
+                        join p in _context.Pago on m.id_pago equals p.id_pago
+                        select new
+                        {
+                            m.descripcion, e.nombre, e.representante, p.tipo_pago, p.subtotal, p.total,
+                            m.zona_mesa, m.cantidad_sillas, m.estado, m.fecha_creacion , m.fecha_mod
+                        }).ToListAsync();
+                            
+                    if (data == null) 
+                        return BadRequest();
+                    
+                    return Ok(await data);
                 }
                 
                 //Get id
                 [HttpGet("{id}")]
                 public async Task<ActionResult<List<Mesa>>> Get(int id)
                 {
-                    var data= _context.Mesa.FindAsync(id);
+                    var data = (from m in _context.Mesa
+                        join e in _context.Empresa on m.empresa_id equals e.id_empresa
+                        join p in _context.Pago on m.id_pago equals p.id_pago
+                        select new
+                        {
+                            m.descripcion, e.nombre, e.representante, p.tipo_pago, p.subtotal, p.total,
+                            m.zona_mesa, m.cantidad_sillas, m.estado, m.fecha_creacion , m.fecha_mod
+                        }).FirstOrDefaultAsync();
+                            
                     if (data == null) 
                         return BadRequest();
-                    return Ok(data);
+                    
+                    return Ok(await data);
                 }
                 
                 //Post
