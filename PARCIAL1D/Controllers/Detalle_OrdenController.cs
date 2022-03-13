@@ -60,9 +60,6 @@ namespace PARCIAL1D.Controllers
                             deo.estado, deo.fecha_creacion, deo.fecha_mod
                         }).FirstOrDefaultAsync();
                             
-                    
-                    if (data == null) 
-                        return BadRequest();
                     return Ok(await data);
                 }
                 

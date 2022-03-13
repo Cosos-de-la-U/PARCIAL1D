@@ -27,7 +27,7 @@ namespace PARCIAL1D.Controllers
                 public async Task<ActionResult<List<Mesa>>> Get()
                 {
                     var data = (from m in _context.Mesa
-                        join e in _context.Empresa on m.empresa_id equals e.id_empresa
+                        join e in _context.Empresa on m.id_empresa equals e.id_empresa
                         join p in _context.Pago on m.id_pago equals p.id_pago
                         select new
                         {
@@ -46,11 +46,11 @@ namespace PARCIAL1D.Controllers
                 public async Task<ActionResult<List<Mesa>>> Get(int id)
                 {
                     var data = (from m in _context.Mesa
-                        join e in _context.Empresa on m.empresa_id equals e.id_empresa
+                        join e in _context.Empresa on m.id_empresa equals e.id_empresa
                         join p in _context.Pago on m.id_pago equals p.id_pago
                         select new
                         {
-                            m.id_mesa, m.descripcion, e.nombre, e.representante, p.tipo_pago, p.subtotal, p.total,
+                            m.id_mesa, m.descripcion, e.nombre ,p.tipo_pago, p.subtotal, p.total,
                             m.zona_mesa, m.cantidad_sillas, m.estado, m.fecha_creacion , m.fecha_mod
                         }).FirstOrDefaultAsync();
                             
@@ -77,7 +77,7 @@ namespace PARCIAL1D.Controllers
                     var data = await _context.Mesa.FindAsync(request.id_mesa);
                     
                     data!.descripcion = request.descripcion;
-                    data!.empresa_id = request.empresa_id;
+                    data!.id_empresa = request.id_empresa;
                     data!.id_pago = request.id_pago;
                     data!.zona_mesa = request.zona_mesa;
                     data!.cantidad_sillas = request.cantidad_sillas;
