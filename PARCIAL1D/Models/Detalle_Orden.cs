@@ -14,6 +14,6 @@ public class Detalle_Orden
     public decimal descuento_especial { get; set; }
     public decimal recargo_orden { get; set; }
     public char estado { get; set; }
-    public DateTime fecha_creacion;
-    public DateTime fecha_mod;
+    public DateTime fecha_creacion { get; set; }
+    public DateTime fecha_mod  { get; set; }
 }
